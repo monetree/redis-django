@@ -7,7 +7,7 @@
 
 5. install requiremets using `pip install -r requirements.txt` (You can use virtualenv also as i am using)
 6. run `python manage.py migrate`
-7. run `python manage.py` in current directory
+7. run `python manage.py runserver` in current directory
 8. in browser run `http://127.0.0.1:8000/mongo/users/` (you can pass `?no_cache=yes` parameter with url if you don't want cached data. I explained about this inside code )
 9. I created one extra api using Raw mongo query `http://127.0.0.1:8000/pymongo/texture/` you can check if you want.
 
