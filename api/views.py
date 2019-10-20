@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from .models import get_texture_data
 from django.http import JsonResponse
 from settings.settings import mydb
 import json
@@ -35,7 +34,7 @@ def get_mysql_data(request):
     # so i just added some loop by looking into real world senario
 
     loop = 1000
-    here i am just using some django query to fetch data from db(mysql/mongodb)
+    # here i am just using some django query to fetch data from db(mysql/mongodb)
     for i in range (loop):
         first_name_count = User.objects.filter(first_name="").count()
         is_active_true_count = User.objects.filter(is_active=True).count()
@@ -97,8 +96,28 @@ def get_mongo_data(request):
     return JsonResponse(api, safe=False)
 
 
+import string
+from django.utils.crypto import get_random_string
+
+
+#this will work on both mysql and mongodb .
+# we just need to manipulate db in settings/db.py
+def create_dummy_users(request):
+    total = request.GET.get("total")
+    if not total:
+        total = 100
+    else:
+        total = int(total)
+    for i in range(total):
+        username = 'user_{}'.format(get_random_string(10, string.ascii_letters))
+        email = '{}@example.com'.format(username)
+        password = get_random_string(50)
+        User.objects.create_user(username=username, email=email, password=password)
+    return JsonResponse({"code":200, "msg":'{} random users created with success!'.format(total)})
+
 # this function i created with out using ORM query(raw mongo query)
 # logic is same
+
 def get_texture_data(request):
     no_cache = request.GET.get("no_cache")
     cache_key = request.get_full_path()
